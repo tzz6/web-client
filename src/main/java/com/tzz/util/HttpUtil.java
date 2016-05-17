@@ -11,8 +11,6 @@ import java.net.URL;
 /**
  * 类说明：<br>
  * 详细描述：<br>
- * @author sfit0210
- * CreateDate: 2013-12-23
  */
 public final class HttpUtil {
 	
