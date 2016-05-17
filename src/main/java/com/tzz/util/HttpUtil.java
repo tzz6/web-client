@@ -8,10 +8,6 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-/**
- * 类说明：<br>
- * 详细描述：<br>
- */
 public final class HttpUtil {
 	
 	/**
