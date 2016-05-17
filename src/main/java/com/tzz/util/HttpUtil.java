@@ -8,6 +8,10 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+/**
+ * HttpUtil
+ *
+ */
 public final class HttpUtil {
 	
 	/**
