@@ -15,6 +15,10 @@ import com.tzz.ws.cxf.service.Orders;
 import com.tzz.ws.cxf.service.WsOrdersService;
 import com.tzz.ws.cxf.service.impl.WsOrdersServiceImpl;
 
+/***
+ * 客户端
+ *
+ */
 @Controller
 public class IndexController {
 	
