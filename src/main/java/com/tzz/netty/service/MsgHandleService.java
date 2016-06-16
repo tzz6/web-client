@@ -44,19 +44,10 @@ public class MsgHandleService {
 
 	}
 
-	/**
-	 * 
-	 * @param msgInfo
-	 */
 	private static void NoticeReceivedMsgInfo(MsgInfo msgInfo) {
 		coreBusinessControl.doReceivedMsgInfo(msgInfo);
-
 	}
 
-	/**
-	 * 
-	 * @param userListList
-	 */
 	private static void NoticeRefreshFriendsList(List<User> userListList) {
 		coreBusinessControl.doRefreshFriendList(userListList);
 	}
@@ -68,12 +59,9 @@ public class MsgHandleService {
 	 * @param login
 	 */
 	private static void NoticeLoginState(LoinEnum loginState, Login login) {
-		if (loginState == Login.LoinEnum.Success) {
+		if (loginState == Login.LoinEnum.Success) {//登录成功，打开聊天窗口
 			coreBusinessControl.doChangeGroupChatView(login);
-		} else {
-
 		}
-
 	}
 
 	/**

@@ -31,8 +31,8 @@ public class CoreBusinessControl {
 
 	/** 校验登录 */
 	public void doCheckConnectLogin(String userName, String userPwd) {
+		//连接服务端
 		doConnectServer();
-
 		userBean = new UserBean();
 		userBean.setUserName(userName);
 		userBean.setUserPwd(userPwd);
@@ -42,6 +42,7 @@ public class CoreBusinessControl {
 		MsgHandleService.doCheckLogin(userBean);
 	}
 
+	/**发送消息*/
 	public void doSendMsg(String msgStr) {
 		MsgHandleService.doSendMsgStr(userBean.getUserName(), msgStr);
 	}

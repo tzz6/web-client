@@ -1,7 +1,6 @@
 package com.tzz.netty.view;
 
 import java.awt.Color;
-import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GraphicsEnvironment;
@@ -10,7 +9,6 @@ import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -18,6 +16,7 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.util.List;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -50,129 +49,19 @@ public class GroupChat extends JFrame implements ActionListener, MouseListener, 
 		this.userBean = userBean;
 	}
 
-	public void refreshFriendsList(List<User> userList) {
+	private JLabel jlLoginUser, jlExit, jlFriend;
 
-		jpFl.removeAll();
+	private JPanel jpBack, jpTopMenu, jpFunction, jpFriendList, jpFl;
 
-		for (User user : userList) {
-			jlFriend = new JLabel(user.getId() + " " + user.getUserName());
-			jlFriend.setFont(new Font("微软雅黑", 1, 12));
-			jlFriend.addMouseListener(this);
+	private JTextPane jtpChat, jtpInChat;
 
-			jpFl.add(jlFriend);
-			jpFl.updateUI();
-			jpFl.invalidate();
-			jpFl.validate();
-			jpFl.repaint();
-		}
+	private JScrollPane jspChat, jspFl;
 
-	}
+	private StyledDocument styledDoc = new DefaultStyledDocument();
 
-	public void refreshReceivedMsg(MsgInfo msgInfo) {
-		try {
-			if (msgInfo.getSendUser().equals(userBean.getUserName())) {
-				styledDoc.insertString(styledDoc.getLength(), msgInfo.getSendUser() + "\r\n",
-						styledDoc.getStyle("Style08"));
-				styledDoc.insertString(styledDoc.getLength(), "\t" + msgInfo.getSendInfo() + "\r\n",
-						styledDoc.getStyle("Style01"));
-			} else {
-				styledDoc.insertString(styledDoc.getLength(), msgInfo.getSendUser() + "\r\n",
-						styledDoc.getStyle("Style02"));
-				styledDoc.insertString(styledDoc.getLength(), "\t" + msgInfo.getSendInfo() + "\r\n",
-						styledDoc.getStyle("Style01"));
-			}
+	String[] fontNames = GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames();
 
-			jtpChat.setCaretPosition(jtpChat.getDocument().getLength());
-		} catch (BadLocationException e) {
-			e.printStackTrace();
-		}
-	}
-
-	public void createStyle(String style, StyledDocument doc, int size, int bold, int italic, int underline,
-			Color color, String fontName) {
-		Style sys = StyleContext.getDefaultStyleContext().getStyle(StyleContext.DEFAULT_STYLE);
-		try {
-			doc.removeStyle(style);
-		} catch (Exception e) {
-		} // 先删除这种Style,假使他存在
-
-		Style s = doc.addStyle(style, sys); // 加入
-		StyleConstants.setFontSize(s, size); // 大小
-		StyleConstants.setBold(s, (bold == 1) ? true : false); // 粗体
-		StyleConstants.setItalic(s, (italic == 1) ? true : false); // 斜体
-		StyleConstants.setUnderline(s, (underline == 1) ? true : false); // 下划线
-		StyleConstants.setForeground(s, color); // 颜色
-		StyleConstants.setFontFamily(s, fontName); // 字体
-	}
-
-	@Override
-	public void mouseClicked(MouseEvent arg0) {
-
-	}
-
-	@Override
-	public void mouseEntered(MouseEvent arg0) {
-
-	}
-
-	@Override
-	public void mouseExited(MouseEvent e) {
-
-	}
-
-	@Override
-	public void mousePressed(MouseEvent e) {
-		if (e.getSource() == jpBack) {
-			// 当鼠标按下的时候获得窗口当前的位置
-			origin.x = e.getX();
-			origin.y = e.getY();
-		}
-
-	}
-
-	@Override
-	public void mouseReleased(MouseEvent arg0) {
-
-	}
-
-	@Override
-	public void actionPerformed(ActionEvent arg0) {
-
-	}
-
-	@Override
-	public void mouseDragged(MouseEvent e) {
-		if (e.getSource() == jpBack) {
-			Point p = this.getLocation();
-			this.setLocation(p.x + e.getX() - origin.x, p.y + e.getY() - origin.y);
-		}
-
-	}
-
-	@Override
-	public void mouseMoved(MouseEvent e) {
-
-	}
-
-	@Override
-	public void keyPressed(KeyEvent e) {
-		if (e.getModifiers() == InputEvent.CTRL_MASK && e.getKeyCode() == KeyEvent.VK_ENTER) {
-			MsgHandleService.coreBusinessControl.doSendMsg(jtpInChat.getText());
-			jtpInChat.setText("");
-		}
-	}
-
-	@Override
-	public void keyReleased(KeyEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void keyTyped(KeyEvent e) {
-		// TODO Auto-generated method stub
-
-	}
+	private Point origin = new Point();
 
 	public GroupChat() {
 		// 背景设置
@@ -188,7 +77,7 @@ public class GroupChat extends JFrame implements ActionListener, MouseListener, 
 		jpTopMenu = new JPanel(null);
 		jpTopMenu.setSize(600, 30);
 		jpTopMenu.setLocation(0, 0);
-		jpTopMenu.setBackground(Color.DARK_GRAY);
+		// jpTopMenu.setBackground(Color.DARK_GRAY);
 		jpBack.add(jpTopMenu);
 
 		jlLoginUser = new JLabel();
@@ -198,18 +87,11 @@ public class GroupChat extends JFrame implements ActionListener, MouseListener, 
 		jlLoginUser.setLocation(10, 10);
 		jpTopMenu.add(jlLoginUser);
 
-		jlMini = new JLabel("Mini");
-		jlMini.setForeground(Color.white);
-		jlMini.setCursor(new Cursor(Cursor.HAND_CURSOR));
-		jlMini.setSize(25, 20);
-		jlMini.setLocation(538, 10);
-		jpTopMenu.add(jlMini);
-
-		jlExit = new JLabel("Exit");
-		jlExit.setForeground(Color.red);
-		jlExit.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		// 退出
+		jlExit = new JLabel(new ImageIcon("resources/LoginUi/close.png"));
 		jlExit.setSize(25, 20);
 		jlExit.setLocation(568, 10);
+		jlExit.addMouseListener(this);
 		jpTopMenu.add(jlExit);
 
 		// 聊天面板
@@ -269,18 +151,118 @@ public class GroupChat extends JFrame implements ActionListener, MouseListener, 
 
 	}
 
-	private JLabel jlLoginUser, jlExit, jlMini, jlFriend;
+	/**好友列表*/
+	public void refreshFriendsList(List<User> userList) {
+		jpFl.removeAll();
+		for (User user : userList) {
+			jlFriend = new JLabel(user.getId() + " " + user.getUserName());
+			jlFriend.setFont(new Font("微软雅黑", 1, 12));
+			jlFriend.addMouseListener(this);
 
-	private JPanel jpBack, jpTopMenu, jpFunction, jpFriendList, jpFl;
+			jpFl.add(jlFriend);
+			jpFl.updateUI();
+			jpFl.invalidate();
+			jpFl.validate();
+			jpFl.repaint();
+		}
+	}
 
-	private JTextPane jtpChat, jtpInChat;
+	/** 刷新接收到的消息 */
+	public void refreshReceivedMsg(MsgInfo msgInfo) {
+		try {
+			if (msgInfo.getSendUser().equals(userBean.getUserName())) {
+				styledDoc.insertString(styledDoc.getLength(), msgInfo.getSendUser() + "\r\n",
+						styledDoc.getStyle("Style08"));
+				styledDoc.insertString(styledDoc.getLength(), "\t" + msgInfo.getSendInfo() + "\r\n",
+						styledDoc.getStyle("Style01"));
+			} else {
+				styledDoc.insertString(styledDoc.getLength(), msgInfo.getSendUser() + "\r\n",
+						styledDoc.getStyle("Style02"));
+				styledDoc.insertString(styledDoc.getLength(), "\t" + msgInfo.getSendInfo() + "\r\n",
+						styledDoc.getStyle("Style01"));
+			}
 
-	private JScrollPane jspChat, jspFl;
+			jtpChat.setCaretPosition(jtpChat.getDocument().getLength());
+		} catch (BadLocationException e) {
+			e.printStackTrace();
+		}
+	}
 
-	private StyledDocument styledDoc = new DefaultStyledDocument();
+	public void createStyle(String style, StyledDocument doc, int size, int bold, int italic, int underline,
+			Color color, String fontName) {
+		Style sys = StyleContext.getDefaultStyleContext().getStyle(StyleContext.DEFAULT_STYLE);
+		try {
+			doc.removeStyle(style);
+		} catch (Exception e) {
+		} // 先删除这种Style,假使他存在
 
-	String[] fontNames = GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames();
+		Style s = doc.addStyle(style, sys); // 加入
+		StyleConstants.setFontSize(s, size); // 大小
+		StyleConstants.setBold(s, (bold == 1) ? true : false); // 粗体
+		StyleConstants.setItalic(s, (italic == 1) ? true : false); // 斜体
+		StyleConstants.setUnderline(s, (underline == 1) ? true : false); // 下划线
+		StyleConstants.setForeground(s, color); // 颜色
+		StyleConstants.setFontFamily(s, fontName); // 字体
+	}
 
-	private Point origin = new Point();
+	@Override
+	public void mouseClicked(MouseEvent arg0) {
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent arg0) {
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		if (e.getSource() == jpBack) {
+			// 当鼠标按下的时候获得窗口当前的位置
+			origin.x = e.getX();
+			origin.y = e.getY();
+		}
+		if (e.getSource() == jlExit) {//退出
+			System.exit(0);
+		}
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent arg0) {
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent arg0) {
+	}
+
+	@Override
+	public void mouseDragged(MouseEvent e) {
+		if (e.getSource() == jpBack) {
+			Point p = this.getLocation();
+			this.setLocation(p.x + e.getX() - origin.x, p.y + e.getY() - origin.y);
+		}
+	}
+
+	@Override
+	public void mouseMoved(MouseEvent e) {
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		if (e.getKeyCode() == KeyEvent.VK_ENTER) {//发送消息
+			MsgHandleService.coreBusinessControl.doSendMsg(jtpInChat.getText());
+			jtpInChat.setText("");
+		}
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+	}
 
 }

@@ -29,6 +29,13 @@ public class MM extends JFrame implements ActionListener, MouseListener, MouseMo
 	private static final long serialVersionUID = 7729221299582581349L;
 
 	private static CoreBusinessControl coreBusinessConntrol;
+	
+	private JPanel pnlCenter;
+	private JLabel lblTop, lblTopClose, lblJtfUserName, lblJpfPassword, lblJtfUserImg, lblJtfPwdImg, lblJbLogin;
+	private JTextField jtfUserName;
+	private JPasswordField jpfPassword;
+	private JButton jbLogin;
+	private Point origin = new Point();
 
 	/**启动客户端*/
 	public static void main(String[] args) {
@@ -38,7 +45,6 @@ public class MM extends JFrame implements ActionListener, MouseListener, MouseMo
 	}
 
 	public MM() {
-		// JLabel
 		lblTop = new JLabel(new ImageIcon("resources/LoginUi/morning.jpg"));
 		lblTop.setSize(430, 184);
 		lblTop.setLocation(0, 0);
@@ -58,13 +64,6 @@ public class MM extends JFrame implements ActionListener, MouseListener, MouseMo
 		pnlCenter.setLocation(0, 184);
 		pnlCenter.setBackground(new Color(235, 242, 249));
 		this.add(pnlCenter);
-
-		lblBottomVersion = new JLabel("V1.0");
-		lblBottomVersion.setSize(30, 15);
-		lblBottomVersion.setLocation(2, 130);
-		lblBottomVersion.setFont(new Font("微软雅黑", Font.BOLD, 12));
-		lblBottomVersion.setForeground(Color.GRAY);
-		pnlCenter.add(lblBottomVersion);
 
 		// 用户名
 		lblJtfUserName = new JLabel(new ImageIcon("resources/LoginUi/edit_frame_normal_reversed.png"));
@@ -133,108 +132,84 @@ public class MM extends JFrame implements ActionListener, MouseListener, MouseMo
 		this.setResizable(false);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setVisible(true);
-
 	}
 
-	private JPanel pnlCenter;
-
-	private JLabel lblTop, lblTopClose, lblJtfUserName, lblJpfPassword, lblJtfUserImg, lblJtfPwdImg,
-			lblJbLogin, lblBottomVersion;
-
-	private JTextField jtfUserName;
-
-	private JPasswordField jpfPassword;
-
-	private JButton jbLogin;
-
-	private Point origin = new Point();
 
 	/**
 	 * 事件
 	 */
 	@SuppressWarnings("deprecation")
-	public void actionPerformed(ActionEvent arg0) {
-		if (arg0.getSource() == jbLogin) {
+	public void actionPerformed(ActionEvent e) {
+		if (e.getSource() == jbLogin) {
 			coreBusinessConntrol.doCheckConnectLogin(jtfUserName.getText(), jpfPassword.getText());
 		}
 	}
 
 	@Override
-	public void mouseClicked(MouseEvent arg0) {
-
+	public void mouseClicked(MouseEvent e) {
 	}
 
 	@Override
-	public void mouseEntered(MouseEvent arg0) {
-		if (arg0.getSource() == lblTopClose) {
+	public void mouseEntered(MouseEvent e) {
+		if (e.getSource() == lblTopClose) {
 			lblTopClose.setIcon(new ImageIcon("resources/LoginUi/close_hover.png"));
 		}
-
-		if (arg0.getSource() == jtfUserName) {
+		if (e.getSource() == jtfUserName) {
 			lblJtfUserName.setIcon(new ImageIcon("resources/LoginUi/edit_frame_hover_reversed.png"));
 		}
-
-		if (arg0.getSource() == jpfPassword) {
+		if (e.getSource() == jpfPassword) {
 			lblJpfPassword.setIcon(new ImageIcon("resources/LoginUi/edit_frame_hover.png"));
 		}
-
-		if (arg0.getSource() == jbLogin) {
+		if (e.getSource() == jbLogin) {
 			jbLogin.setIcon(new ImageIcon("resources/LoginUi/button_login_hover.png"));
 		}
 	}
 
 	@Override
-	public void mouseExited(MouseEvent arg0) {
-		if (arg0.getSource() == lblTopClose) {
+	public void mouseExited(MouseEvent e) {
+		if (e.getSource() == lblTopClose) {
 			lblTopClose.setIcon(new ImageIcon("resources/LoginUi/close.png"));
 		}
-
-		if (arg0.getSource() == jtfUserName) {
+		if (e.getSource() == jtfUserName) {
 			lblJtfUserName.setIcon(new ImageIcon("resources/LoginUi/edit_frame_normal_reversed.png"));
 		}
-
-		if (arg0.getSource() == jpfPassword) {
+		if (e.getSource() == jpfPassword) {
 			lblJpfPassword.setIcon(new ImageIcon("resources/LoginUi/edit_frame_normal.png"));
 		}
-
-		if (arg0.getSource() == jbLogin) {
+		if (e.getSource() == jbLogin) {
 			jbLogin.setIcon(new ImageIcon("resources/LoginUi/button_login_normal.png"));
 		}
 	}
 
 	@Override
-	public void mousePressed(MouseEvent arg0) {
-
-		if (arg0.getSource() == lblTopClose) {
+	public void mousePressed(MouseEvent e) {
+		if (e.getSource() == lblTopClose) {//退出
 			System.exit(0);
 		}
-
-		if (arg0.getSource() == jbLogin) {
+		if (e.getSource() == jbLogin) {
 			jbLogin.setIcon(new ImageIcon("resources/LoginUi/button_login_down.png"));
 		}
-
-		if (arg0.getSource() == lblTop) {
+		if (e.getSource() == lblTop) {
 			// 当鼠标按下的时候获得窗口当前的位置
-			origin.x = arg0.getX();
-			origin.y = arg0.getY();
+			origin.x = e.getX();
+			origin.y = e.getY();
 		}
 	}
 
 	@Override
-	public void mouseReleased(MouseEvent arg0) {
-
+	public void mouseReleased(MouseEvent e) {
 	}
 
 	@Override
-	public void mouseDragged(MouseEvent arg0) {
-		if (arg0.getSource() == lblTop) {
+	public void mouseDragged(MouseEvent e) {
+		if (e.getSource() == lblTop) {
 			Point p = this.getLocation();
-			this.setLocation(p.x + arg0.getX() - origin.x, p.y + arg0.getY() - origin.y);
+			this.setLocation(p.x + e.getX() - origin.x, p.y + e.getY() - origin.y);
 		}
 	}
 
 	@Override
-	public void mouseMoved(MouseEvent arg0) {
+	public void mouseMoved(MouseEvent e) {
 	}
 
 }
