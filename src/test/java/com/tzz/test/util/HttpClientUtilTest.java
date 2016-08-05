@@ -12,6 +12,19 @@ import com.tzz.util.HttpClientUtil;
 
 public class HttpClientUtilTest {
 
+	/**CMSP预审结果推送回SFBUY*/
+	@Test
+	public void cmspSendHttpPostSfbuy() {
+		String xml = "<?xml version='1.0' encoding='UTF-8'?><ExamResult><orderId>2016072815031873137474577</orderId><status>1</status>"
+				+ "<rmark>HKG 香港口岸</rmark></ExamResult>";
+		System.out.println("content:" + xml);
+		Map<String, String> maps = new HashMap<String, String>();
+		maps.put("content", xml);
+		String responseContent = HttpClientUtil.getInstance().sendHttpPost("http://localhost:8080/sfbuy/examResult",
+				maps);
+		System.out.println("reponse content:" + responseContent);
+	}
+	
 	@Test
 	public void testSendHttpPost1() {
 		String responseContent = HttpClientUtil.getInstance()
