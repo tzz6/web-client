@@ -15,7 +15,7 @@ public class HttpClientUtilTest {
 	/**CMSP预审结果推送回SFBUY*/
 	@Test
 	public void cmspSendHttpPostSfbuy() {
-		String xml = "<?xml version='1.0' encoding='UTF-8'?><ExamResult><orderId>2016072815031873137474577</orderId><status>1</status>"
+		String xml = "<?xml version='1.0' encoding='UTF-8'?><ExamResult><orderId>2016092017105606187259220</orderId><status>1</status>"
 				+ "<rmark>HKG 香港口岸</rmark></ExamResult>";
 		System.out.println("content:" + xml);
 		Map<String, String> maps = new HashMap<String, String>();
