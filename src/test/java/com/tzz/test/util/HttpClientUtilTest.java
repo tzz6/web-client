@@ -15,7 +15,7 @@ public class HttpClientUtilTest {
 	/**CMSP预审结果推送回SFBUY*/
 	@Test
 	public void cmspSendHttpPostSfbuy() {
-		String xml = "<?xml version='1.0' encoding='UTF-8'?><ExamResult><orderId>2016092017105606187259220</orderId><status>1</status>"
+		String xml = "<?xml version='1.0' encoding='UTF-8'?><ExamResult><orderId>2016111116221163551409355</orderId><status>1</status>"
 				+ "<rmark>HKG 香港口岸</rmark></ExamResult>";
 		System.out.println("content:" + xml);
 		Map<String, String> maps = new HashMap<String, String>();
@@ -120,7 +120,7 @@ public class HttpClientUtilTest {
 	
 	@Test
 	public void testSendHttpGet2(){
-		for (int i = 0; i < 20; i++) {
+		for (int i = 0; i < 5; i++) {
 			try {
 //				System.out.println("----------------" + i + "----------------");
 				List<String> urls = new ArrayList<String>();
@@ -216,8 +216,8 @@ public class HttpClientUtilTest {
 //					Thread.sleep(1000*1);
 					HttpClientUtil.getInstance().sendHttpGet(url);
 				}
-				System.out.println("--------------sleep(1000*60*10)--------------");
-				Thread.sleep(1000*60*10);
+				System.out.println("--------------sleep(1000*6)--------------");
+				Thread.sleep(1000*6);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
