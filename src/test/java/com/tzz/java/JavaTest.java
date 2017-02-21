@@ -1,8 +1,8 @@
 package com.tzz.java;
 
+import java.math.BigDecimal;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
-import java.net.UnknownHostException;
 
 import org.junit.Test;
 
@@ -40,5 +40,17 @@ public class JavaTest {
 
 		// 把字符串所有小写字母改为大写成为正规的mac地址并返回
 		return sb.toString().toUpperCase();
+	}
+	
+	@Test
+	public void test3(){
+		System.out.println((double)1236/10000);
+	}
+
+	@Test
+	public void test4() {
+		BigDecimal b1=new BigDecimal(Double.toString(261.40));  
+        BigDecimal b2=new BigDecimal(Double.toString(100));  
+		System.out.println(b1.multiply(b2).intValue());
 	}
 }

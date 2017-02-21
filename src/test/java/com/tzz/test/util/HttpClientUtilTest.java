@@ -15,7 +15,7 @@ public class HttpClientUtilTest {
 	/**CMSP预审结果推送回SFBUY*/
 	@Test
 	public void cmspSendHttpPostSfbuy() {
-		String xml = "<?xml version='1.0' encoding='UTF-8'?><ExamResult><orderId>2016111116221163551409355</orderId><status>1</status>"
+		String xml = "<?xml version='1.0' encoding='UTF-8'?><ExamResult><orderId>2017021510123739838007450</orderId><status>1</status>"
 				+ "<rmark>HKG 香港口岸</rmark></ExamResult>";
 		System.out.println("content:" + xml);
 		Map<String, String> maps = new HashMap<String, String>();
@@ -24,6 +24,24 @@ public class HttpClientUtilTest {
 				maps);
 		System.out.println("reponse content:" + responseContent);
 	}
+	
+	
+	/** 接收'BSP路由推送'(路由推送为批量成功或失败)*/
+	@Test
+	public void bspHttpPostSfbuy() {
+		String xml = "<?xml version='1.0' encoding='UTF-8'?><Request service='RoutePushService' lang='zh-CN'>"
+				+ "<Body><WaybillRoute id='10148383553' mailno='604181429660' orderid='9A6C9FB23EDE490E8B8EABFF565B5838' "
+				+ "acceptTime='2016-11-30 13:52:26' acceptAddress='澳门' remark='派送成功' opCode='80'/></Body></Request>";
+		System.out.println("content:" + xml);
+		Map<String, String> maps = new HashMap<String, String>();
+		maps.put("content", xml);
+		String responseContent = HttpClientUtil.getInstance().sendHttpPost("http://10.118.65.47:8081/bsp/route/push",
+				maps);
+		System.out.println("reponse content:" + responseContent);
+	}
+	
+	
+	
 	
 	@Test
 	public void testSendHttpPost1() {

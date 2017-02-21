@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-3.0.xsd
+	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+	http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
+	
+	<!-- 客户端，客户端通过监听器接收消息（消费者） -->
+	<!-- 扫描service自动注入为bean -->
+	<context:component-scan base-package="com.tzz.jms.activemq" />
+	
+	<!-- ActiveMQ -->
+	<!-- 真正可以产生Connection的ConnectionFactory，由对应的 JMS服务厂商提供-->
+    <bean id="targetConnectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
+        <property name="brokerURL" value="tcp://localhost:61616"/>
+    </bean>
+    <bean id="pooledConnectionFactory" class="org.apache.activemq.pool.PooledConnectionFactory">
+        <property name="connectionFactory" ref="targetConnectionFactory"/>
+        <property name="maxConnections" value="10"/>
+    </bean>
+    <bean id="connectionFactory" class="org.springframework.jms.connection.SingleConnectionFactory">
+        <property name="targetConnectionFactory" ref="pooledConnectionFactory"/>
+    </bean>
+    
+    <!-- 消息转换器   -->  
+	<bean id="jsonMessageConverter" class="com.tzz.jms.activemq.converter.JsonMessageConverter"/>
+
+	<!-- **********************************************模式1.Queue点对点模式**********************************************   -->
+	<!-- 消息队列的目的地   -->
+	<bean id="destination_1" class="org.apache.activemq.command.ActiveMQQueue">
+		<constructor-arg>
+			<value>queue_1</value>
+		</constructor-arg>
+	</bean>
+	
+	<!-- **********************监听器1.MessageListene 客户端通过监听器接收消息************************ -->
+    <bean id="consumerMessageListener_1" class="com.tzz.jms.activemq.listener.ConsumerMessageListener">
+    	<property name="messageConverter" ref="jsonMessageConverter"/>  
+    </bean>
+    
+    <bean id="messageListener_1" class="org.springframework.jms.listener.DefaultMessageListenerContainer">
+        <property name="connectionFactory" ref="connectionFactory" />
+        <property name="destination" ref="destination_1" />
+        <property name="messageListener" ref="consumerMessageListener_1" />
+    </bean>
+   
+</beans>
