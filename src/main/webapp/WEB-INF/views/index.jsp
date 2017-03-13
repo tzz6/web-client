@@ -9,6 +9,7 @@
 </head>
 <body>
 	<a href="${ctx }/cxfList">CXF测试</a><br>
+	<a href="http://localhost:8080/web-demo/cxf/rest/userRest/getUser/1/tzz/深圳">CXF-Restful风格测试</a><br>
 	<a href="${ctx }/hsIndex">Hessian测试</a><br>
 </body>
 </html>

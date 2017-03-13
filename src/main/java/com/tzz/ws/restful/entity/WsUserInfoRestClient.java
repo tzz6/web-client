@@ -8,13 +8,15 @@ import java.util.Map;
 import javax.ws.rs.core.MediaType;
 
 import org.apache.cxf.jaxrs.client.WebClient;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import com.tzz.web.domain.Role;
 
-
+/**
+ * CXF restful风格测试类
+ *
+ */
 public class WsUserInfoRestClient {
 	 
     private static WebClient client;
