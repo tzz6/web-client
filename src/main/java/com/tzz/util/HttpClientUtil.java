@@ -77,6 +77,24 @@ public class HttpClientUtil {
 	/**
 	 * 发送 post请求
 	 * @param httpUrl 地址
+	 * @param params 参数
+	 */
+	public String sendHttpPostJson(String httpUrl, String params) {
+		HttpPost httpPost = new HttpPost(httpUrl);// 创建httpPost  
+		try {
+			//设置参数
+			StringEntity stringEntity = new StringEntity(params, "UTF-8");
+			stringEntity.setContentType("application/json");
+			httpPost.setEntity(stringEntity);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return sendHttpPost(httpPost);
+	}
+	
+	/**
+	 * 发送 post请求
+	 * @param httpUrl 地址
 	 * @param maps 参数
 	 */
 	public String sendHttpPost(String httpUrl, Map<String, String> maps) {

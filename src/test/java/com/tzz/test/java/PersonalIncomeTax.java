@@ -37,7 +37,7 @@ public class PersonalIncomeTax {
 	}
 
 	public static void main(String[] args) {
-		double salary = 14000;// 收入
+		double salary = 14910;// 收入
 		double socialSecurity = 220.56 + 13.51 + 10.15 + 116.80;// 各项社会保险费
 		double lowestTaxableLimit = 3500;// 起征点
 		System.out.println(

@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.json.JSONObject;
 import org.junit.Test;
 
 import com.tzz.util.HttpClientUtil;
@@ -52,8 +53,54 @@ public class HttpClientUtilTest {
 
 	@Test
 	public void testSendHttpPost2() {
-		String responseContent = HttpClientUtil.getInstance().sendHttpPost("http://localhost:8080/web-demo/test/send",
+		String responseContent = HttpClientUtil.getInstance().sendHttpPost("http://localhost:8082/test/send",
 				"username=test01&password=123456");
+		System.out.println("reponse content:" + responseContent);
+	}
+	
+	@Test
+	public void testSendHttpPostJson() {
+		JSONObject params = new JSONObject();
+		params.put("gatewayCode", "JFK");
+		params.put("customersCode", "00001");
+		params.put("ShipmentName", "C901");
+		params.put("productType", "SE0051");
+		params.put("declaredValue", "100");
+		params.put("actualWeight", "2.000");
+		String responseContent = HttpClientUtil.getInstance().sendHttpPostJson("http://10.118.66.41:8080/csSelect/test/send",
+				params.toString());
+		System.out.println("reponse content:" + responseContent);
+	}
+	
+	@Test
+	public void testSendHttpPostJson2() {
+		JSONObject params = new JSONObject();
+		params.put("waybillNo", "070123");
+		params.put("gatewayCode", "C901");
+		params.put("customersCode", "");
+		params.put("senderAdress", "");
+		params.put("senderCompany", "");
+		params.put("senderPhone", "");
+		params.put("senderCode", "");
+		params.put("receiverCode", "");
+		params.put("receiverAdress", "");
+		params.put("receiverCompany", "");
+		params.put("receiverPhone", "");
+		params.put("shipmentName", "");
+		params.put("productType", "MYR");
+		params.put("declaredValue", "100.00");
+		params.put("actualWeight", "");
+		params.put("monthlyAccount", "");
+		params.put("goodsName", "");
+		params.put("payMethod", "");
+		params.put("originPlace", "");
+		params.put("currencyCode", "RMB");
+		
+		String json = params.toString();
+//		System.out.println(json);
+		String responseContent = HttpClientUtil.getInstance().sendHttpPostJson("http://iop-mcs.sit.sf-express.com/mcs/agentSelect", json);
+//		"{'waybillNo': '070123','gatewayCode': 'MIA','productType': 'C901','declaredValue': '2.596','currencyCode': 'MYR','customersCode':'','senderAdress':'','senderCompany':'','senderPhone':'','senderCode':'','receiverCode':'','receiverAdress':'','receiverCompany':'','receiverPhone':'','shipmentName':'','actualWeight':'','monthlyAccount':'','goodsName':'','payMethod':'', 'originPlace':''}"
+		
 		System.out.println("reponse content:" + responseContent);
 	}
 
